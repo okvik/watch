@@ -1,0 +1,63 @@
+.TH WATCH 1
+.SH NAME
+watch \- run a command on file change
+.SH SYNOPSIS
+.B watch 
+[
+.B -t
+sec
+] [[
+.B -e
+pattern
+] ... ] [
+.B command
+]
+.SH DESCRIPTION
+.PP
+Run
+.IR command
+.RB ( mk
+by default) when a change to files
+in the current directory is detected.
+.PP
+The options are as follows:
+.TF "-e pattern"
+.TP
+.BI -e pattern
+Watch files matching a
+.IR pattern ;
+it may be given multiple times and
+defaults to
+.BR \e.[chsy]$ 
+.TP
+.BI -t sec
+Sets the polling period;
+one second by default.
+.TP
+.B -G
+Prevents regrouping to the parent
+process' note group. The default
+to regroup was chosen to make it
+easy to kill
+.I watch
+in common use by  interrupting the
+parent shell.
+.SH EXAMPLES
+.EX
+watch -e '\e.man$' 'mk install; window man -P prog' &
+.EE
+.SH SEE ALSO
+.SH SOURCE
+.B git://code.kvik.link/watch
+.SH BUGS
+.I Watch
+will not react on file removal.
+.PP
+.I Qid.vers
+is watched for changes, which is
+not maintained by every file server.
+.PP
+The polling period is actually
+.I sec
+plus the time it takes to run
+.IR command .
