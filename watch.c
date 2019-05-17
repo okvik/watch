@@ -144,32 +144,35 @@ watch(void)
 }
 
 void
+rc(char *cmd)
+{
+	Waitmsg *m;
+
+	switch(fork()){
+	case -1: sysfatal("fork: %r");
+	case 0:
+		execl("/bin/rc", "rc", "-c", cmd, nil);
+		sysfatal("execl: %r");
+	}
+	if((m = wait()) && m->msg[0])
+		fprint(2, "watch: %s\n", m->msg);
+}
+
+void
 regroup(void)
 {
-	int fd, n, noteid;
-	char buf[128];
+	char *cmd;
 	
-	snprint(buf, sizeof buf, "/proc/%d/noteid", getppid());
-	if((fd = open(buf, OREAD)) < 0)
-		sysfatal("open: %r");
-	if((n = read(fd, buf, 128)) < 0)
-		sysfatal("read: %r");
-	close(fd);
-	buf[n] = 0;
-	noteid = strtol(buf, nil, 10);
-	snprint(buf, sizeof buf, "/proc/%d/noteid", getpid());
-	if((fd = open(buf, OWRITE)) < 0)
-		sysfatal("open: %r");
-	if(fprint(fd, "%d", noteid) < 0)
-		sysfatal("fprint: %r");
-	close(fd);
+	cmd = smprint("cat /proc/%d/noteid >/proc/%d/noteid",
+		getppid(), getpid());
+	rc(cmd);
+	free(cmd);
 }
 
 void
 main(int argc, char *argv[])
 {
 	char *cmd;
-	Waitmsg *m;
 
 	cmd = "mk";
 	ARGBEGIN{
@@ -191,14 +194,6 @@ main(int argc, char *argv[])
 	if(noregroup == 0) regroup();
 	for(;;){
 		watch();
-		switch(fork()){
-		case -1: sysfatal("fork: %r");
-		case 0:
-			execl("/bin/rc", "rc", "-c", cmd, nil);
-			sysfatal("execl: %r");
-		}
-		if((m = wait()) && m->msg[0])
-			fprint(2, "watch: %s\n", m->msg);
-		free(m);
+		rc(cmd);
 	}
 }
