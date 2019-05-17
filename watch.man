@@ -2,8 +2,10 @@
 .SH NAME
 watch \- run a command on file change
 .SH SYNOPSIS
-.B watch 
+.B watch
 [
+.B -G
+] [
 .B -t
 sec
 ] [[

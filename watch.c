@@ -20,7 +20,7 @@ List *filel;
 void
 usage(void)
 {
-	fprint(2, "usage: %s [[-e expr] ...] [-t sec] [cmd]\n", argv0);
+	fprint(2, "usage: %s [-G] [[-e expr] ...] [-t sec] [cmd]\n", argv0);
 	exits("usage");
 }
 
