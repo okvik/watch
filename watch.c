@@ -172,6 +172,7 @@ regroup(void)
 void
 main(int argc, char *argv[])
 {
+	int t;
 	char *cmd;
 
 	cmd = "mk";
@@ -179,7 +180,9 @@ main(int argc, char *argv[])
 	case 'e':
 		eadd(EARGF(usage())); break;
 	case 't':
-		period = 1000*strtol(EARGF(usage()), nil, 10); break;
+		if((t = strtol(EARGF(usage()), nil, 10)) > 0)
+			period = t*1000;
+		break;
 	case 'G':
 		noregroup = 1; break;
 	default: usage();
