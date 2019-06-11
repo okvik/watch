@@ -173,6 +173,7 @@ void
 main(int argc, char *argv[])
 {
 	int t;
+	char *unit;
 	char *cmd;
 
 	cmd = "mk";
@@ -180,7 +181,12 @@ main(int argc, char *argv[])
 	case 'e':
 		eadd(EARGF(usage())); break;
 	case 't':
-		if((t = strtol(EARGF(usage()), nil, 10)) > 0)
+		t = strtol(EARGF(usage()), &unit, 10);
+		if(t < 0)
+			t = -t;
+		if(unit != nil && strncmp(unit, "ms", 2) == 0)
+			period = t;
+		else
 			period = t*1000;
 		break;
 	case 'G':

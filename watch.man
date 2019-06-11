@@ -32,9 +32,12 @@ it may be given multiple times and
 defaults to
 .BR \e.[chsy]$ 
 .TP
-.BI -t sec
-Sets the polling period;
-one second by default.
+.BI -t period
+Sets the polling
+.IR period
+in seconds (one second by default).
+\'ms' can be appended to the value
+to specify time in miliseconds.
 .TP
 .B -G
 Prevents regrouping to the parent
