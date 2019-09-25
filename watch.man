@@ -53,7 +53,7 @@ watch -e '\e.man$' 'mk install; window man -P prog' &
 .EE
 .SH SEE ALSO
 .SH SOURCE
-.B git://code.kvik.link/watch
+.B git://code.a-b.xyz/watch
 .SH BUGS
 .I Watch
 will not react on file removal.
