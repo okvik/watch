@@ -156,6 +156,7 @@ rc(char *cmd)
 	}
 	if((m = wait()) && m->msg[0])
 		fprint(2, "watch: %s\n", m->msg);
+	free(m);
 }
 
 void
