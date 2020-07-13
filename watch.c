@@ -14,6 +14,7 @@ struct List {
 char pwd[1024];
 int period = 1000;
 int noregroup = 0;
+int once = 0;
 List *expl;
 List *filel;
 
@@ -192,6 +193,8 @@ main(int argc, char *argv[])
 		break;
 	case 'G':
 		noregroup = 1; break;
+	case '1':
+		once = 1; break;
 	default: usage();
 	}ARGEND;
 	if(expl == nil)
@@ -205,5 +208,6 @@ main(int argc, char *argv[])
 	for(;;){
 		watch();
 		rc(cmd);
+		if(once) exits(nil);
 	}
 }
